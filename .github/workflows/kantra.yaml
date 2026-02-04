@@ -7,9 +7,6 @@ on:
         description: "Whether to setup access to the testing maven packages"
         default: true
         type: boolean
-      bot_id:
-        description: "bot id"
-        type: string
       os:
         description: os to run on 
         required: true 
@@ -50,7 +47,7 @@ jobs:
           ls -la $HOME/.local/bin/kantra.exe
           $HOME/.local/bin/kantra version
 
-      - name: Also add local/bin to windows path
+      - name: Also add local/bin to windows path and get host wsl ip 
         if: ${{ inputs.os == 'windows-latest' }}
         shell: powershell
         run: |
@@ -118,7 +115,6 @@ jobs:
           directory: local-maven-resources
           port: 8085
 
-
       - name: Set maven settings path (Windows)
         if: ${{ !inputs.skip_maven && inputs.os == 'windows-latest' }}
         shell: bash
@@ -163,7 +159,6 @@ jobs:
         env:
           SKIP_MAVEN: ${{ fromJSON(inputs.skip_maven) }}
         run: |
-          podman run --entrypoint curl quay.io/konveyor/java-external-provider -v http://${{ env.NETWORK_GATEWAY }}:8085
           koncur run tests -t kantra -o yaml --output-file test.yaml
 
 
