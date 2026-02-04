@@ -158,6 +158,8 @@ jobs:
         shell: bash
         env:
           SKIP_MAVEN: ${{ fromJSON(inputs.skip_maven) }}
+          ##TODO: testing ruleset PR.
+          RUNNER_IMG: quay.io/shawn_hurley/kantra:latest
         run: |
           koncur run tests -t kantra -o yaml --output-file test.yaml
 
